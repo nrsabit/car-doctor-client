@@ -20,7 +20,11 @@ const Navbar = () => {
                     <ul tabIndex={0} className="menu menu-compact dropdown-content mt-3 p-2 shadow bg-base-100 rounded-box w-52">
                         <li> <Link to="/">Home</Link> </li>
                         <li> <Link to="/blogs">Blogs</Link> </li>
-                        {user ? <li> <button onClick={handleSignOut}>Log Out</button> </li> : <li> <Link to="/login">Login</Link> </li>}
+                        {user ? <>
+                            <li> <Link to="/bookings">Booked Services</Link> </li>
+                            <li> <button onClick={handleSignOut}>Log Out</button> </li>
+                        </> :
+                            <li> <Link to="/login">Login</Link> </li>}
                     </ul>
                 </div>
                 <Link to="/"><img src={logo} alt="" /></Link>
@@ -29,7 +33,11 @@ const Navbar = () => {
                 <ul className="menu menu-horizontal px-1">
                     <li> <Link to="/">Home</Link> </li>
                     <li> <Link to="/blogs">Blogs</Link> </li>
-                    {user ? <li> <button onClick={handleSignOut}>Log Out</button> </li> : <li> <Link to="/login">Login</Link> </li>}
+                    {user ? <>
+                        <li> <Link to="/bookings">Booked Services</Link> </li>
+                        <li> <button onClick={handleSignOut}>Log Out</button> </li>
+                    </> :
+                        <li> <Link to="/login">Login</Link> </li>}
                 </ul>
             </div>
             <div className="navbar-end">

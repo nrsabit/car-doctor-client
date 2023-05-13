@@ -12,6 +12,42 @@ const Bookings = () => {
             .then(data => setBookings(data))
     }, [])
 
+    const handleDelete = id => {
+        const proceed = confirm("Are you Sure?")
+        if(proceed){
+            fetch(`http://localhost:5000/bookings/${id}`, {
+                method: "DELETE"
+            })
+            .then(res => res.json())
+            .then(data => {
+                if(data.deletedCount > 0){
+                    alert("Deleted Successfully")
+                    const remaining = bookings.filter(booking => booking._id !== id)
+                    setBookings(remaining)
+                }
+            })
+        }
+    }
+
+    const handleConfirm = id => {
+        const proceed = confirm("Do you want to Confirm it?")
+        if(proceed){
+            fetch(`http://localhost:5000/bookings/${id}`, {
+                method: "PATCH",
+                headers: {
+                    "content-type": "application/json"
+                },
+                body: JSON.stringify({status: "confirmed"})
+            })
+            .then(res => res.json())
+            .then(data => {
+                if(data.modifiedCount > 0){
+                    alert('Booking Confirmed')
+                }
+            })
+        }
+    }
+
     return (
         <div className='mb-8'>
             <h2 className='text-5xl font-bold text-center text-secondary my-8'>Total Booked Services: {bookings.length}</h2>
@@ -21,9 +57,6 @@ const Bookings = () => {
                     <thead>
                         <tr>
                             <th>
-                                <label>
-                                    <input type="checkbox" className="checkbox" />
-                                </label>
                             </th>
                             <th>Image</th>
                             <th>Service</th>
@@ -33,7 +66,7 @@ const Bookings = () => {
                         </tr>
                     </thead>
                     <tbody>
-                        {bookings.map(booking => <BookingRow key={booking._id} booking={booking}></BookingRow>)}
+                        {bookings.map(booking => <BookingRow key={booking._id} booking={booking} handleDelete={handleDelete} handleConfirm={handleConfirm}></BookingRow>)}
                     </tbody>
                 </table>
             </div>

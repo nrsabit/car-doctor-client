@@ -1,11 +1,14 @@
 import React, { useContext } from 'react';
 import Navbar from '../../shared/Navbar/Navbar';
 import img from '../../../assets/images/login/login.svg'
-import { Link } from 'react-router-dom';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { AuthContext } from '../../providers/AuthProvider/AuthProvider';
 
 const Login = () => {
     const {logIn} = useContext(AuthContext)
+    const location = useLocation()
+    const url = location?.state?.from?.pathname || '/';
+    const navigat = useNavigate()
     const handleLogIn = event => {
         event.preventDefault()
         const form = event.target;
@@ -14,7 +17,9 @@ const Login = () => {
         form.reset()
 
         logIn(email, password)
-        .then(res => console.log('from login', res.user))
+        .then(res => {
+            navigat(url)
+        })
         .catch(error => console.log(error))
     }
     return (

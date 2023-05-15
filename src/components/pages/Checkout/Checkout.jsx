@@ -17,7 +17,7 @@ const Checkout = () => {
             name, date, email, price, service:title, service_id: _id, img
         }
         form.reset()
-        fetch('http://localhost:5000/checkout', {
+        fetch('https://car-doctor-server-seven-ecru.vercel.app/checkout', {
             method: "POST",
             headers: {
                 "content-type": "application/json"

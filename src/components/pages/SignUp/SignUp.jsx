@@ -1,11 +1,15 @@
 import React, { useContext } from 'react';
 import Navbar from '../../shared/Navbar/Navbar';
 import img from '../../../assets/images/login/login.svg'
-import { Link } from 'react-router-dom';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { AuthContext } from '../../providers/AuthProvider/AuthProvider';
+import SocialLogin from '../../shared/SocialLogin/SocialLogin';
 
 const SignUp = () => {
     const {signUp} = useContext(AuthContext)
+    const navigate = useNavigate()
+    const location = useLocation()
+    const url = location?.state?.from?.pathname || '/'
     const handleSubmit = event => {
         event.preventDefault()
         const form = event.target;
@@ -15,7 +19,7 @@ const SignUp = () => {
         form.reset()
 
         signUp(email, password)
-        .then(res => console.log('from signup', res.user))
+        .then(res => navigate(url, {replace: true}))
         .catch(error => console.log(error))
     }
     return (
@@ -53,6 +57,7 @@ const SignUp = () => {
                                 </div>
                             </form>
                             <p className='my-5 text-center'>Already have Account? <Link to="/login" className='text-secondary font-bold'>Login Now</Link> </p>
+                            <SocialLogin></SocialLogin>
                         </div>
                     </div>
                 </div>

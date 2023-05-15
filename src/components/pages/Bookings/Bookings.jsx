@@ -1,13 +1,20 @@
 import React, { useContext, useEffect, useState } from 'react';
 import { AuthContext } from '../../providers/AuthProvider/AuthProvider';
 import BookingRow from './BookingRow';
+import { useNavigate } from 'react-router-dom';
 
 const Bookings = () => {
     const [bookings, setBookings] = useState([])
     const { user } = useContext(AuthContext)
+    const navigate = useNavigate()
     const url = `http://localhost:5000/bookings?email=${user?.email}`
     useEffect(() => {
-        fetch(url)
+        fetch(url, {
+            method: "GET",
+            headers: {
+                authorization: `Bearer ${localStorage.getItem('car-doctors-access-token')}`
+            }
+        })
             .then(res => res.json())
             .then(data => setBookings(data))
     }, [])

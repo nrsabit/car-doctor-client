@@ -8,7 +8,7 @@ const Login = () => {
     const {logIn} = useContext(AuthContext)
     const location = useLocation()
     const url = location?.state?.from?.pathname || '/';
-    const navigat = useNavigate()
+    const navigate = useNavigate()
     const handleLogIn = event => {
         event.preventDefault()
         const form = event.target;
@@ -17,8 +17,23 @@ const Login = () => {
         form.reset()
 
         logIn(email, password)
-        .then(res => {
-            navigat(url)
+        .then(result => {
+            const user = result.user
+            const loggedUser = {
+               email: user.email
+            }
+            fetch('http://localhost:5000/jwt', {
+                method: "POST",
+                headers: {
+                    "content-type": "application/json"
+                },
+                body: JSON.stringify(loggedUser)
+            })
+            .then(res => res.json())
+            .then(data => {
+                localStorage.setItem('car-doctors-access-token', data.token)
+                navigate(url, {replace: true})
+            })
         })
         .catch(error => console.log(error))
     }

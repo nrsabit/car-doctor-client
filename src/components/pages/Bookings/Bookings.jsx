@@ -16,7 +16,14 @@ const Bookings = () => {
             }
         })
             .then(res => res.json())
-            .then(data => setBookings(data))
+            .then(data => {
+                if(data.error){
+                    alert(data.message)
+                    navigate('/')
+                }else{
+                    setBookings(data)
+                }
+            })
     }, [])
 
     const handleDelete = id => {
